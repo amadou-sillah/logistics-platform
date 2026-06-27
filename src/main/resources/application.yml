@@ -2,12 +2,10 @@ spring:
   application:
     name: logistics-backend
   datasource:
-    url: jdbc:postgresql://dpg-d8v16rer1os73dqs690-a.oregon-postgres.render.com:5432/logistics_db_bj6i?ssl=true&sslmode=require
-    username: logistics_user
-    password: 0DTbxKLCv8dZQkZdx2zs2ULx92gXJZGI
+    url: jdbc:postgresql://logistics_user:0DTbxKLCv8dZQkZdx2zs2ULx92gXJZGI@dpg-d8v16rer1os73dqs690-a.oregon-postgres.render.com/logistics_db_bj6i?ssl=true&sslmode=require
     driver-class-name: org.postgresql.Driver
     hikari:
-      connection-timeout: 30000
+      connection-timeout: 60000
       idle-timeout: 600000
       max-lifetime: 1800000
       connection-test-query: SELECT 1
