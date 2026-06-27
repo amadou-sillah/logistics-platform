@@ -17,8 +17,9 @@ public class NotificationObserver {
 
     @EventListener
     public void handleShipmentStatusChange(ShipmentStatusEvent event) {
-        // Create a notification for the customer
-        User customer = userRepository.findById(event.getShipment().getCustomerId()).orElse(null);
+        String customerId = event.getShipment().getCustomerId();
+        if (customerId == null) return;
+        User customer = userRepository.findById(customerId).orElse(null);
         if (customer == null) return;
         Notification notification = new Notification();
         notification.setUserId(customer.getId());
@@ -28,6 +29,5 @@ public class NotificationObserver {
                 event.getOldStatus(), event.getNewStatus()));
         notification.setRead(false);
         notificationRepository.save(notification);
-        // In real system, also send email/push via NotificationFactory
     }
 }

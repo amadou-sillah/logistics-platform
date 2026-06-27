@@ -8,9 +8,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "Notifications".toLowerCase())
+@Table(name = "notifications")
 public class Notification extends BaseEntity {
     @NotBlank
-    private String name; // or userId for some
-    // add other fields as needed – for simplicity, minimal
+    private String userId;
+
+    private String title;
+
+    private String message;
+
+    private boolean read = false;
 }

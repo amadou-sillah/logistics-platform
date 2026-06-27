@@ -2,15 +2,33 @@ package com.logistics.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Entity
-@Table(name = "AuditLogs".toLowerCase())
+@Table(name = "audit_logs")
 public class AuditLog extends BaseEntity {
+
     @NotBlank
-    private String name; // or userId for some
-    // add other fields as needed – for simplicity, minimal
+    @Column(nullable = false)
+    private String action;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String performedBy;
+
+    private String entityType;
+
+    private String entityId;
+
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime timestamp;
 }

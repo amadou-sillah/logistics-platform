@@ -8,9 +8,14 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "DeliveryAgents".toLowerCase())
+@Table(name = "delivery_agents")
 public class DeliveryAgent extends BaseEntity {
     @NotBlank
-    private String name; // or userId for some
-    // add other fields as needed – for simplicity, minimal
+    private String userId;
+
+    private String vehicleNumber;
+
+    private String phoneNumber;
+
+    private boolean active = true;
 }
