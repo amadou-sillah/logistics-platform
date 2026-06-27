@@ -5,7 +5,6 @@ import com.logistics.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -13,13 +12,10 @@ import java.util.List;
 @PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class AdminController {
-
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.findAll();
-    }
+    public List<User> getUsers() { return userService.findAll(); }
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable String id) {

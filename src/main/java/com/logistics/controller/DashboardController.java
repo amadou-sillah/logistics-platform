@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/dashboard")
 @RequiredArgsConstructor
 public class DashboardController {
-
     private final ShipmentService shipmentService;
 
     @GetMapping("/stats")
@@ -54,27 +52,16 @@ public class DashboardController {
             result.put(dayName, dailyCounts.getOrDefault(dayName, 0L));
         }
         return result.entrySet().stream()
-                .map(e -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", e.getKey());
-                    map.put("value", e.getValue().intValue());
-                    return map;
-                })
+                .map(e -> Map.of("name", e.getKey(), "value", e.getValue().intValue()))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/status-distribution")
     public List<Map<String, Object>> getStatusDistribution() {
-        List<Shipment> all = shipmentService.findAll();
-        Map<String, Long> countByStatus = all.stream()
+        Map<String, Long> countByStatus = shipmentService.findAll().stream()
                 .collect(Collectors.groupingBy(Shipment::getStatus, Collectors.counting()));
         return countByStatus.entrySet().stream()
-                .map(e -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", e.getKey());
-                    map.put("value", e.getValue());
-                    return map;
-                })
+                .map(e -> Map.of("name", e.getKey(), "value", e.getValue()))
                 .collect(Collectors.toList());
     }
 

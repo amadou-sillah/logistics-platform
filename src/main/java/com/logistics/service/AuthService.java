@@ -17,18 +17,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthService {
-
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final UserService userService;
 
     public AuthResponse authenticate(AuthRequest request) {
         try {
-            log.info("Login attempt for email: {}", request.getEmail());
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
-            log.info("Authentication successful for: {}", request.getEmail());
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             String token = tokenProvider.generateToken(authentication);
             User user = userService.findByEmail(request.getEmail())
                     .orElseThrow(() -> new RuntimeException("User not found after authentication"));
@@ -39,10 +35,10 @@ public class AuthService {
             userDto.setRole(user.getRole().name());
             return new AuthResponse(token, userDto);
         } catch (AuthenticationException e) {
-            log.error("Authentication failed for {}: {}", request.getEmail(), e.getMessage());
+            log.error("Authentication failed: {}", e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("Unexpected error during login for {}: ", request.getEmail(), e);
+            log.error("Unexpected error during login", e);
             throw e;
         }
     }

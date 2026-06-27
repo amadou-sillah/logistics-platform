@@ -24,12 +24,12 @@ public class Shipment extends BaseEntity {
 
     private String destination;
 
-    private String status;          // PENDING, IN_TRANSIT, DELIVERED, DELAYED
+    private String status;
 
     private LocalDateTime eta;
 
     @Positive
     private Double amount;
 
-    private String priority;        // STANDARD, EXPRESS, INTERNATIONAL
+    private String priority;
 }

@@ -14,14 +14,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
 
@@ -33,9 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && tokenProvider.validateToken(token)) {
             String username = tokenProvider.getUsernameFromToken(token);
             String role = tokenProvider.getRoleFromToken(token);
-            if (!role.startsWith("ROLE_")) {
-                role = "ROLE_" + role;
-            }
+            if (!role.startsWith("ROLE_")) role = "ROLE_" + role;
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(userDetails, null,

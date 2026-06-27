@@ -5,7 +5,6 @@ import com.logistics.service.ShipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -13,7 +12,6 @@ import java.util.List;
 @PreAuthorize("hasAnyRole('AGENT', 'ADMIN')")
 @RequiredArgsConstructor
 public class AgentController {
-
     private final ShipmentService shipmentService;
 
     @GetMapping("/tasks")

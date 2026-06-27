@@ -7,7 +7,6 @@ import com.logistics.repository.TrackingEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ShipmentService {
-
     private final ShipmentRepository shipmentRepository;
     private final TrackingEventRepository trackingEventRepository;
 

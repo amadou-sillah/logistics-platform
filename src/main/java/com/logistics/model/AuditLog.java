@@ -4,18 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "AuditLogs".toLowerCase())
 public class AuditLog extends BaseEntity {
     @NotBlank
-    private String userId;
-    @NotBlank
-    private String action;
-    private String entityType;
-    private String entityId;
-    private LocalDateTime timestamp = LocalDateTime.now();
+    private String name; // or userId for some
+    // add other fields as needed – for simplicity, minimal
 }

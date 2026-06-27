@@ -8,58 +8,41 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Map<String, Object>> handleAuth(AuthenticationException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.UNAUTHORIZED.value());
-        body.put("error", "Invalid credentials");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("timestamp", LocalDateTime.now(), "status", 401, "error", "Invalid credentials"));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("errors", ex.getBindingResult().getFieldErrors().stream()
-                .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .toList());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("timestamp", LocalDateTime.now(), "status", 400,
+                        "errors", ex.getBindingResult().getFieldErrors().stream()
+                                .map(e -> e.getField() + ": " + e.getDefaultMessage()).toList()));
     }
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, Object>> handleResponseStatus(ResponseStatusException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", ex.getStatusCode().value());
-        body.put("error", ex.getReason());
-        return ResponseEntity.status(ex.getStatusCode()).body(body);
+        return ResponseEntity.status(ex.getStatusCode())
+                .body(Map.of("timestamp", LocalDateTime.now(), "status", ex.getStatusCode().value(), "error", ex.getReason()));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Access Denied: " + ex.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("timestamp", LocalDateTime.now(), "status", 403, "error", "Access Denied"));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal server error: " + ex.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("timestamp", LocalDateTime.now(), "status", 500, "error", "Internal server error"));
     }
 }
