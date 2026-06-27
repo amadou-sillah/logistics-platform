@@ -2,15 +2,21 @@ spring:
   application:
     name: logistics-backend
   datasource:
-    url: jdbc:postgresql://dpg-d8vl6rernols73dqs690-a.oregon-postgres.render.com/logistics_db_bj6i
+    url: jdbc:postgresql://dpd-d8v16rern0ls73dqs690-a:5432/logistics_db_bj6i?ssl=true&sslmode=require
     username: logistics_user
     password: ODTbxKLcV8dZQkZdx2zs2ULx92gXJZGl
     driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
   cache:
