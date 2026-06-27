@@ -2,16 +2,15 @@ spring:
   application:
     name: logistics-backend
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/logistics}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    url: jdbc:postgresql://dpg-d8vl6rernols73dqs690-a:5432/logistics_db_bj6i
+    username: logistics_user
+    password: ODTbxKLcV8dZQkZdx2zs2ULx92gXJZGl
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
   cache:
