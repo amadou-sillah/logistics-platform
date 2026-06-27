@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: logistics-backend
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
+  cache:
+    type: none
+  security:
+    jwt:
+      secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      expiration: 86400000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    com.logistics: DEBUG
+    org.springframework.security: INFO
+
+app:
+  concurrency:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 1000
