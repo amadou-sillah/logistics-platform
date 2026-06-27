@@ -15,14 +15,13 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "audit_logs")
 public class AuditLog extends BaseEntity {
-
     @NotBlank
     @Column(nullable = false)
     private String action;
 
     @NotBlank
     @Column(nullable = false)
-    private String performedBy;
+    private String userId;  // renamed from performedBy
 
     private String entityType;
 
