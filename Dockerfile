@@ -9,4 +9,10 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", \
+    "-Dcom.mongodb.ssl.allowInvalidCertificates=true", \
+    "-Dcom.mongodb.ssl.invalidHostNameAllowed=true", \
+    "-Dhttps.protocols=TLSv1.2,TLSv1.3", \
+    "-Djdk.tls.client.protocols=TLSv1.2,TLSv1.3", \
+    "-Djsse.enableSNIExtension=false", \
+    "-jar", "app.jar"]

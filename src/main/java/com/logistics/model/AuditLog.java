@@ -1,33 +1,14 @@
 package com.logistics.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@Entity
-@Table(name = "audit_logs")
+@Document(collection = "AuditLogs".toLowerCase())
 public class AuditLog extends BaseEntity {
     @NotBlank
-    @Column(nullable = false)
-    private String action;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String userId;
-
-    private String entityType;
-
-    private String entityId;
-
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime timestamp;
+    private String name; // adjust as needed
 }

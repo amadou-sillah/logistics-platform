@@ -1,24 +1,9 @@
 spring:
   application:
     name: logistics-backend
-  datasource:
-    url: jdbc:postgresql://dpg-d8v16rer1os73dqs690-a.oregon-postgres.render.com:5432/logistics_db_bj6i?sslmode=no-verify
-    username: logistics_user
-    password: 0DTbxKLCv8dZQkZdx2zs2ULx92gXJZGI
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      connection-timeout: 60000
-      idle-timeout: 600000
-      max-lifetime: 1800000
-      connection-test-query: SELECT 1
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
   cache:
     type: none
   security:
@@ -35,7 +20,6 @@ logging:
   level:
     com.logistics: DEBUG
     org.springframework.security: INFO
-    org.hibernate.SQL: DEBUG
 
 app:
   concurrency:

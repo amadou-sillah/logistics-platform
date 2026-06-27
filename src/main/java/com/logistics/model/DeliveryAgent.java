@@ -1,21 +1,14 @@
 package com.logistics.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "delivery_agents")
+@Document(collection = "DeliveryAgents".toLowerCase())
 public class DeliveryAgent extends BaseEntity {
     @NotBlank
-    private String userId;
-
-    private String vehicleNumber;
-
-    private String phoneNumber;
-
-    private boolean active = true;
+    private String name; // adjust as needed
 }

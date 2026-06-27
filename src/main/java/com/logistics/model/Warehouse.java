@@ -1,24 +1,14 @@
 package com.logistics.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "warehouses")
+@Document(collection = "Warehouses".toLowerCase())
 public class Warehouse extends BaseEntity {
     @NotBlank
-    private String name;
-
-    private String location;
-
-    @PositiveOrZero
-    private Integer capacity;
-
-    @PositiveOrZero
-    private Integer currentCapacity;
+    private String name; // adjust as needed
 }

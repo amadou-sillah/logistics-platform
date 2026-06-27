@@ -1,21 +1,14 @@
 package com.logistics.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "notifications")
+@Document(collection = "Notifications".toLowerCase())
 public class Notification extends BaseEntity {
     @NotBlank
-    private String userId;
-
-    private String title;
-
-    private String message;
-
-    private boolean read = false;
+    private String name; // adjust as needed
 }
