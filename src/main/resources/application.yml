@@ -2,7 +2,7 @@ spring:
   application:
     name: logistics-backend
   datasource:
-    url: jdbc:postgresql://dpg-d8vl6rernols73dqs690-a:5432/logistics_db_bj6i
+    url: jdbc:postgresql://dpg-d8vl6rernols73dqs690-a.oregon-postgres.render.com/logistics_db_bj6i
     username: logistics_user
     password: ODTbxKLcV8dZQkZdx2zs2ULx92gXJZGl
     driver-class-name: org.postgresql.Driver
