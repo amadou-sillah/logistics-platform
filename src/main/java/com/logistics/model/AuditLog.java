@@ -21,7 +21,7 @@ public class AuditLog extends BaseEntity {
 
     @NotBlank
     @Column(nullable = false)
-    private String userId;  // renamed from performedBy
+    private String userId;  // correct field name
 
     private String entityType;
 

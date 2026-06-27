@@ -29,7 +29,7 @@ public class Shipment extends BaseEntity {
     private LocalDateTime eta;
 
     @Positive
-    private Double amount;
+    private Double amount;   // ensures getAmount() exists
 
     private String priority;
 }
