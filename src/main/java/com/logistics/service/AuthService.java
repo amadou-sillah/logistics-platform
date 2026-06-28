@@ -6,7 +6,6 @@ import com.logistics.dto.UserDto;
 import com.logistics.model.User;
 import com.logistics.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
@@ -35,10 +33,10 @@ public class AuthService {
             userDto.setRole(user.getRole().name());
             return new AuthResponse(token, userDto);
         } catch (AuthenticationException e) {
-            log.error("Authentication failed: {}", e.getMessage());
+            System.err.println("Authentication failed: " + e.getMessage());
             throw e;
         } catch (Exception e) {
-            log.error("Unexpected error during login", e);
+            System.err.println("Unexpected error during login: " + e.getMessage());
             throw e;
         }
     }

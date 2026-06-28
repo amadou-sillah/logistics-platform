@@ -52,7 +52,12 @@ public class DashboardController {
             result.put(dayName, dailyCounts.getOrDefault(dayName, 0L));
         }
         return result.entrySet().stream()
-                .map(e -> Map.of("name", e.getKey(), "value", e.getValue().intValue()))
+                .map(e -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", e.getKey());
+                    map.put("value", e.getValue().intValue());
+                    return map;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +66,12 @@ public class DashboardController {
         Map<String, Long> countByStatus = shipmentService.findAll().stream()
                 .collect(Collectors.groupingBy(Shipment::getStatus, Collectors.counting()));
         return countByStatus.entrySet().stream()
-                .map(e -> Map.of("name", e.getKey(), "value", e.getValue()))
+                .map(e -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", e.getKey());
+                    map.put("value", e.getValue());
+                    return map;
+                })
                 .collect(Collectors.toList());
     }
 
