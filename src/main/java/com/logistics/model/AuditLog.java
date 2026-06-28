@@ -18,5 +18,5 @@ public class AuditLog extends BaseEntity {
     private String action;
     private String entityType;
     private String entityId;
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 }
