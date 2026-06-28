@@ -13,6 +13,4 @@ ENTRYPOINT ["java", \
     "-Dcom.mongodb.ssl.allowInvalidCertificates=true", \
     "-Dcom.mongodb.ssl.invalidHostNameAllowed=true", \
     "-Dhttps.protocols=TLSv1.2,TLSv1.3", \
-    "-Djdk.tls.client.protocols=TLSv1.2,TLSv1.3", \
-    "-Djsse.enableSNIExtension=false", \
     "-jar", "app.jar"]

@@ -1,5 +1,3 @@
 package com.logistics.model;
 
-public enum Role {
-    ADMIN, CUSTOMER, AGENT
-}
+public enum Role { ADMIN, CUSTOMER, AGENT }
