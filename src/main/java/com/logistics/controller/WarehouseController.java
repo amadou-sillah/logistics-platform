@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,8 @@ public class WarehouseController {
 
     @PostMapping
     public Warehouse create(@RequestBody Warehouse warehouse) {
-        warehouse.setCreatedAt(java.time.LocalDateTime.now());
-        warehouse.setUpdatedAt(java.time.LocalDateTime.now());
+        warehouse.setCreatedAt(LocalDateTime.now());
+        warehouse.setUpdatedAt(LocalDateTime.now());
         return warehouseRepository.save(warehouse);
     }
 

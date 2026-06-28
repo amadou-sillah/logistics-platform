@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,8 +24,8 @@ public class AgentManagementController {
 
     @PostMapping
     public DeliveryAgent create(@RequestBody DeliveryAgent agent) {
-        agent.setCreatedAt(java.time.LocalDateTime.now());
-        agent.setUpdatedAt(java.time.LocalDateTime.now());
+        agent.setCreatedAt(LocalDateTime.now());
+        agent.setUpdatedAt(LocalDateTime.now());
         return deliveryAgentRepository.save(agent);
     }
 
