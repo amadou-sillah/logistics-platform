@@ -7,8 +7,11 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "Notifications".toLowerCase())
+@Document(collection = "notifications")
 public class Notification extends BaseEntity {
     @NotBlank
-    private String name; // adjust as needed
+    private String userId;
+    private String title;
+    private String message;
+    private boolean read = false;
 }
