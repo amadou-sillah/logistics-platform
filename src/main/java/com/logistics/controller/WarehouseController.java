@@ -3,6 +3,9 @@ package com.logistics.controller;
 import com.logistics.model.Warehouse;
 import com.logistics.repository.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,7 @@ import java.util.List;
 @RequestMapping("/warehouses")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('ADMIN')")
+@Slf4j
 public class WarehouseController {
 
     private final WarehouseRepository warehouseRepository;
@@ -23,10 +27,12 @@ public class WarehouseController {
     }
 
     @PostMapping
-    public Warehouse create(@RequestBody Warehouse warehouse) {
+    public ResponseEntity<Warehouse> create(@RequestBody Warehouse warehouse) {
+        log.info("Creating warehouse: {}", warehouse);
         warehouse.setCreatedAt(LocalDateTime.now());
         warehouse.setUpdatedAt(LocalDateTime.now());
-        return warehouseRepository.save(warehouse);
+        Warehouse saved = warehouseRepository.save(warehouse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @DeleteMapping("/{id}")
