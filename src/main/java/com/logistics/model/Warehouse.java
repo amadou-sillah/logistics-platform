@@ -16,12 +16,9 @@ public class Warehouse extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
     private String name;
-
     private String location;
-
     @PositiveOrZero
     private Integer capacity;
-
     @PositiveOrZero
     private Integer currentCapacity = 0;
 }
