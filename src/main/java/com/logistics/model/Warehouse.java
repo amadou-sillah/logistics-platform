@@ -1,24 +1,26 @@
 package com.logistics.model;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Entity
-@Table(name = "warehouses")
+@EqualsAndHashCode(callSuper = true)
+@Document(collection = "warehouses")
 public class Warehouse extends BaseEntity {
-    @NotBlank
-    @Column(nullable = false)
+
+    @NotBlank(message = "Warehouse name is required")
     private String name;
+
     private String location;
-    @PositiveOrZero
+
+    @PositiveOrZero(message = "Capacity cannot be negative")
     private Integer capacity;
-    @PositiveOrZero
+
+    @PositiveOrZero(message = "Current capacity cannot be negative")
     private Integer currentCapacity = 0;
 }
