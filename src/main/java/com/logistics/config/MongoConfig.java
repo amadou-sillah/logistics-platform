@@ -29,7 +29,7 @@ public class MongoConfig {
 
         String uri = System.getenv("SPRING_DATA_MONGODB_URI");
         if (uri == null) {
-            uri = "mongodb://localhost:27017/logistics";
+            uri = "mongodb://localhost:27017/LogisticsManagement";
         }
         ConnectionString connectionString = new ConnectionString(uri);
 
