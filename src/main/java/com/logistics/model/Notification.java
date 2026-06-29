@@ -21,22 +21,21 @@ public class Notification {
     
     @NotBlank(message = "User ID is required")
     @Indexed
-    private String userId; // agent or admin ID
+    private String userId;
     
     @NotBlank(message = "Message is required")
     private String message;
     
     @NotNull(message = "Type is required")
-    private NotificationType type; // INFO, WARNING, TASK, DELIVERY, SYSTEM
+    private NotificationType type;
     
     private boolean read = false;
     
     @Indexed
     private LocalDateTime createdAt = LocalDateTime.now();
     
-    // Optional: link to related entity
-    private String relatedEntityId; // shipmentId, warehouseId, etc.
-    private String relatedEntityType; // SHIPMENT, WAREHOUSE, AGENT
+    private String relatedEntityId;
+    private String relatedEntityType;
     
     public enum NotificationType {
         INFO, WARNING, TASK, DELIVERY, SYSTEM, ALERT

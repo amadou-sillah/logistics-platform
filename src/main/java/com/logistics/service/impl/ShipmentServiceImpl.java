@@ -5,7 +5,6 @@ import com.logistics.model.TrackingEvent;
 import com.logistics.repository.ShipmentRepository;
 import com.logistics.repository.TrackingEventRepository;
 import com.logistics.service.ShipmentService;
-import com.logistics.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class ShipmentServiceImpl implements ShipmentService {
     
     private final ShipmentRepository shipmentRepository;
     private final TrackingEventRepository trackingEventRepository;
-    private final NotificationService notificationService;
     
     // ============ EXISTING METHODS ============
     
@@ -55,12 +53,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         shipment.setUpdatedAt(LocalDateTime.now());
         Shipment updated = shipmentRepository.save(shipment);
         
-        notificationService.createTaskNotification(
-            agentId,
-            "New shipment assigned to you: " + shipment.getTrackingNumber(),
-            shipmentId
-        );
-        
         log.info("📦 Shipment {} assigned to agent {}", shipmentId, agentId);
         return updated;
     }
@@ -79,18 +71,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         }
         
         Shipment updated = shipmentRepository.save(shipment);
-        
-        if (shipment.getAssignedAgentId() != null) {
-            String message = String.format(
-                "Shipment %s status changed from %s to %s",
-                shipment.getTrackingNumber(), oldStatus, status
-            );
-            notificationService.createDeliveryNotification(
-                shipment.getAssignedAgentId(),
-                message,
-                shipmentId
-            );
-        }
         
         log.info("📦 Shipment {} status updated: {} → {}", shipmentId, oldStatus, status);
         return updated;
@@ -125,16 +105,6 @@ public class ShipmentServiceImpl implements ShipmentService {
             shipment.setStatus("PENDING");
         }
         Shipment saved = shipmentRepository.save(shipment);
-        
-        // Send notification if assigned to agent
-        if (saved.getAssignedAgentId() != null) {
-            notificationService.createTaskNotification(
-                saved.getAssignedAgentId(),
-                "New shipment created: " + saved.getTrackingNumber(),
-                saved.getId()
-            );
-        }
-        
         log.info("✅ Shipment created: {}", saved.getTrackingNumber());
         return saved;
     }
@@ -153,11 +123,9 @@ public class ShipmentServiceImpl implements ShipmentService {
                                           String description, Double latitude, Double longitude) {
         log.info("📍 Adding tracking event for shipment: {}", shipmentId);
         
-        // Verify shipment exists
         Shipment shipment = shipmentRepository.findById(shipmentId)
             .orElseThrow(() -> new RuntimeException("Shipment not found"));
         
-        // Create tracking event
         TrackingEvent event = new TrackingEvent();
         event.setShipmentId(shipmentId);
         event.setStatus(status);
@@ -169,7 +137,6 @@ public class ShipmentServiceImpl implements ShipmentService {
         
         TrackingEvent saved = trackingEventRepository.save(event);
         
-        // Update shipment status
         shipment.setStatus(status);
         shipment.setUpdatedAt(LocalDateTime.now());
         shipmentRepository.save(shipment);
