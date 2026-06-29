@@ -4,7 +4,6 @@ import com.logistics.dto.ApiResponse;
 import com.logistics.dto.AgentRequest;
 import com.logistics.model.Agent;
 import com.logistics.service.AgentService;
-import com.logistics.service.NotificationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,21 +21,13 @@ import java.util.List;
 @Slf4j
 public class AgentController {
     
-    private final AgentService agentService;
-    private final NotificationService notificationService;
+    private final AgentService agentService;  // ← This will now be injected successfully!
     
-    // CREATE AGENT
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Agent>> createAgent(@Valid @RequestBody AgentRequest request) {
         log.info("📦 Creating agent: {}", request.getUserId());
         ApiResponse<Agent> response = agentService.createAgent(request);
-        
-        if (response.isSuccess() && notificationService != null) {
-            notificationService.createSystemNotification(
-                "New agent created: " + request.getFullName() + " (" + request.getUserId() + ")"
-            );
-        }
         
         if (response.isSuccess()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -44,7 +35,6 @@ public class AgentController {
         return ResponseEntity.badRequest().body(response);
     }
     
-    // GET ALL AGENTS (Admin only)
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<Agent>>> getAllAgents(
@@ -56,7 +46,6 @@ public class AgentController {
         return ResponseEntity.ok(response);
     }
     
-    // GET CURRENT AGENT'S PROFILE
     @GetMapping("/me")
     @PreAuthorize("hasAnyRole('AGENT', 'ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Agent>> getCurrentAgent() {
@@ -69,7 +58,6 @@ public class AgentController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    // GET AGENT BY ID
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Agent>> getAgentById(@PathVariable String id) {
@@ -81,7 +69,6 @@ public class AgentController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     
-    // UPDATE AGENT
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Agent>> updateAgent(
@@ -90,22 +77,12 @@ public class AgentController {
         log.info("📦 Updating agent: {}", id);
         ApiResponse<Agent> response = agentService.updateAgent(id, request);
         
-        if (response.isSuccess() && notificationService != null) {
-            Agent agent = response.getData();
-            notificationService.createTaskNotification(
-                agent.getId(),
-                "Your profile has been updated by admin",
-                "PROFILE_UPDATE"
-            );
-        }
-        
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body(response);
     }
     
-    // UPDATE AGENT STATUS
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Agent>> updateAgentStatus(
@@ -113,31 +90,19 @@ public class AgentController {
             @RequestParam boolean active) {
         ApiResponse<Agent> response = agentService.updateAgentStatus(id, active);
         
-        if (response.isSuccess() && notificationService != null) {
-            Agent agent = response.getData();
-            String status = active ? "activated" : "deactivated";
-            notificationService.createTaskNotification(
-                agent.getId(),
-                "Your account has been " + status + " by admin",
-                "STATUS_UPDATE"
-            );
-        }
-        
         if (response.isSuccess()) {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body(response);
     }
     
-    // DELETE AGENT (Soft delete)
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteAgent(@PathVariable String id) {
         log.info("📦 Deleting agent: {}", id);
         ApiResponse<Void> response = agentService.deleteAgent(id);
         
-        if (response.isSuccess() && notificationService != null) {
-            notificationService.createSystemNotification("Agent deactivated: " + id);
+        if (response.isSuccess()) {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body(response);

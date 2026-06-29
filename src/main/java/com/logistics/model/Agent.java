@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
@@ -46,21 +45,7 @@ public class Agent {
     private Boolean active = true;
     private Boolean isAvailable = true;
     
-    @DBRef
-    private Warehouse warehouse;
-    
-    private Location currentLocation;
     private Double rating = 0.0;
     private Integer totalDeliveries = 0;
     private LocalDateTime joinedDate = LocalDateTime.now();
-    
-    private String password;
-    
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Location {
-        private String type = "Point";
-        private double[] coordinates = {0, 0};
-    }
 }
