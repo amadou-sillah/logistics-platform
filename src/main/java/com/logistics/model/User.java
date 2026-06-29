@@ -1,26 +1,22 @@
 package com.logistics.model;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 @Document(collection = "users")
 public class User extends BaseEntity {
-    @NotBlank private String name;
-    @Email @NotBlank @Indexed(unique = true) private String email;
-    @NotBlank private String password;
+    @NotBlank
+    private String name;
+    @Email @NotBlank @Indexed(unique = true)
+    private String email;
+    @NotBlank
+    private String password;
     private Role role = Role.CUSTOMER;
     private boolean active = true;
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-    public Role getRole() { return role; }
-    public void setRole(Role role) { this.role = role; }
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
 }
