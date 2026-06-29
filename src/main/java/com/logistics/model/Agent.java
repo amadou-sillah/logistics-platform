@@ -19,13 +19,13 @@ public class Agent {
     private String id;
     
     @NotBlank(message = "User ID is required")
-    @Size(min = 3, max = 20, message = "User ID must be between 3 and 20 characters")
-    @Pattern(regexp = "^[A-Z0-9]+$", message = "User ID can only contain uppercase letters and numbers")
+    @Size(min = 3, max = 20)
+    @Pattern(regexp = "^[A-Z0-9]+$")
     @Indexed(unique = true)
     private String userId;
     
     @NotBlank(message = "Full name is required")
-    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
+    @Size(min = 2, max = 50)
     private String fullName;
     
     @NotBlank(message = "Email is required")
@@ -34,7 +34,7 @@ public class Agent {
     private String email;
     
     @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$", message = "Please provide a valid phone number")
+    @Pattern(regexp = "^\\+?[1-9]\\d{1,14}$")
     private String phone;
     
     @NotBlank(message = "Vehicle type is required")
@@ -44,6 +44,9 @@ public class Agent {
     
     private Boolean active = true;
     private Boolean isAvailable = true;
+    
+    // ✅ ADDED: Missing field that was causing the error
+    private String warehouseId;
     
     private Double rating = 0.0;
     private Integer totalDeliveries = 0;
