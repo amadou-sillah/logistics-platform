@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@SpringBootApplication(
+    scanBasePackages = "com.logistics",
+    exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class}
+)
 @EnableCaching
 @EnableAsync
 public class LogisticsApplication {
