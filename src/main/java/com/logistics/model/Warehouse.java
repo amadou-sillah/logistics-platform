@@ -8,19 +8,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 @Document(collection = "warehouses")
 public class Warehouse extends BaseEntity {
-
-    @NotBlank(message = "Warehouse name is required")
+    @NotBlank
     private String name;
-
     private String location;
-
-    @PositiveOrZero(message = "Capacity cannot be negative")
+    @PositiveOrZero
     private Integer capacity;
-
-    @PositiveOrZero(message = "Current capacity cannot be negative")
+    @PositiveOrZero
     private Integer currentCapacity = 0;
 }
