@@ -1,21 +1,29 @@
 package com.logistics.model;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "tracking_events")
-public class TrackingEvent extends BaseEntity {
-    @NotBlank
+public class TrackingEvent {
+    
+    @Id
+    private String id;
+    
+    @Indexed
     private String shipmentId;
-    private String eventType;
-    private String description;
+    
+    private String status;
     private String location;
+    private String description;
     private Double latitude;
     private Double longitude;
-    private LocalDateTime occurredAt = LocalDateTime.now();
+    private LocalDateTime timestamp;
 }

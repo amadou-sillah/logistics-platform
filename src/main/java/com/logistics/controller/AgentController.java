@@ -32,8 +32,7 @@ public class AgentController {
         log.info("📦 Creating agent: {}", request.getUserId());
         ApiResponse<Agent> response = agentService.createAgent(request);
         
-        // Send notification to admin about new agent
-        if (response.isSuccess()) {
+        if (response.isSuccess() && notificationService != null) {
             notificationService.createSystemNotification(
                 "New agent created: " + request.getFullName() + " (" + request.getUserId() + ")"
             );
@@ -57,17 +56,14 @@ public class AgentController {
         return ResponseEntity.ok(response);
     }
     
-    // GET CURRENT AGENT'S PROFILE (FIXED: Not loading all shipments)
+    // GET CURRENT AGENT'S PROFILE
     @GetMapping("/me")
-    @PreAuthorize("hasAnyRole('AGENT', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('AGENT', 'ADMIN', 'MANAGER')")
     public ResponseEntity<ApiResponse<Agent>> getCurrentAgent() {
         String userId = getCurrentUserId();
         ApiResponse<Agent> response = agentService.getAgentByUserId(userId);
         
         if (response.isSuccess()) {
-            // Load only this agent's shipments, not all
-            Agent agent = response.getData();
-            // agent.setShipments(shipmentService.findByAgentId(agent.getId())); // Use this instead of findAll()
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
@@ -94,8 +90,7 @@ public class AgentController {
         log.info("📦 Updating agent: {}", id);
         ApiResponse<Agent> response = agentService.updateAgent(id, request);
         
-        // Send notification to agent about profile update
-        if (response.isSuccess()) {
+        if (response.isSuccess() && notificationService != null) {
             Agent agent = response.getData();
             notificationService.createTaskNotification(
                 agent.getId(),
@@ -118,8 +113,7 @@ public class AgentController {
             @RequestParam boolean active) {
         ApiResponse<Agent> response = agentService.updateAgentStatus(id, active);
         
-        // Send notification about status change
-        if (response.isSuccess()) {
+        if (response.isSuccess() && notificationService != null) {
             Agent agent = response.getData();
             String status = active ? "activated" : "deactivated";
             notificationService.createTaskNotification(
@@ -142,8 +136,8 @@ public class AgentController {
         log.info("📦 Deleting agent: {}", id);
         ApiResponse<Void> response = agentService.deleteAgent(id);
         
-        if (response.isSuccess()) {
-            notificationService.createSystemNotification("Agent deleted: " + id);
+        if (response.isSuccess() && notificationService != null) {
+            notificationService.createSystemNotification("Agent deactivated: " + id);
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.badRequest().body(response);
